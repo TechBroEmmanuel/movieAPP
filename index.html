@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
   <!-- custom style link -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="app.css" />
 
 
   <!-- swiper cdn link -->
@@ -112,30 +112,20 @@
       </div>
 
     </section>
+    <!-- modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title"></h2>
+        <p><strong>Rating:</strong> <span id="modal-rating"></span></p>
+        <p><strong>Runtime:</strong> <span id="modal-runtime"></span></p>
+        <p><strong>Genre:</strong> <span id="modal-genre"></span></p>
+      </div>
+    </div>
+    
   </div>
 
-  <!-- Swiper JS -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
-  <!-- Initialize Swiper -->
-  <script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 3,
-      centeredSlides: true,
-      loop: true,
-      loopFillGroupWithBlank: true,
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
-      spaceBetween: 20,
-      grabCursor: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-    });
-  </script>
   <script src="app.js"></script>
 </body>
 

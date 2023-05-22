@@ -30,11 +30,15 @@ prevButton.addEventListener('click', () => {
     showMovies(initialMovies, movie_cards)
 })
 
-// Add event listener to the next button
+
 nextButton.addEventListener('click', () => {
-    movieIndex = Math.min(movieIndex + 1, initialMovies.length - 1) 
-    showMovies(initialMovies, movie_cards);
+    const totalMovies = initialMovies.length;
+    movieIndex = (movieIndex + 1) % totalMovies;
+    const endIndex = (movieIndex + 5) % totalMovies;
+    const visibleMovies = initialMovies.slice(movieIndex, endIndex);
+    showMovies(visibleMovies, movie_cards);
 });
+
 
 //get trending movies with initial 5 movies only
 trendingMovies(trendingUrl)
@@ -55,13 +59,14 @@ async function trendingMovies(url) {
     const response = await fetch(url);
     const jsonData = await response.json();
     initialMovies = jsonData.results;
+    console.log(initialMovies)
     // if (limit) {
     //     movies = movies.slice(0, limit); //keep only the first 5 movies
     //     initialMovies = [...movies];
     // } 
     
 
-    showMovies(initialMovies, movie_cards, movieIndex);
+    showMovies(initialMovies, movie_cards);
 
    
 }
@@ -69,20 +74,40 @@ async function trendingMovies(url) {
 const showMovies = (movies, container) => {
     container.innerHTML = '';
     movies.forEach((movie, i) => {
-        const { title, poster_path } = movie;
+        const { title, poster_path, vote_average, runtime, genre_ids } = movie;
         const card = document.createElement('div')
         card.classList.add('movie_card');
-         card.style.transform = `translateX(${(i - movieIndex) * 2}rem)`;
+         card.style.transform = `translateX(${(i - movieIndex) * 1}rem)`;
         card.innerHTML = `
         <img src="${imgURL + poster_path}" alt="${title}"/>  
          `
+        //add click listener to movie card
+        card.addEventListener('click', () => {
+            //populate the modal
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-rating').textContent = vote_average;
+            document.getElementById('modal-runtime').textContent = runtime;
+            document.getElementById('modal-genre').textContent = genre_ids;
 
+            //show the modal
+            const modal = document.getElementById('modal');
+            modal.style.display = 'block';
+        })
 
         container.appendChild(card);
 
     })
-    container.style.width = `${movies.length * 18}rem`;
+    const containerWidth = movies.length * 17; 
+    container.style.width = `${containerWidth}rem`;
 };
+//close the modal when open
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('close')) {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
+    }
+});
+
 
 viewAllSeries.addEventListener('click', () => {
     // Call the trendingMovies function again to fetch and display all the trending movies
@@ -95,63 +120,13 @@ async function series(url, limit = null) {
     const jsonData = await response.json();
     let seriesData = jsonData.results;
     console.log(seriesData)
-    if (limit) {
-        seriesData = seriesData.slice(0, limit);
-    }
+    // if (limit) {
+    //     seriesData = seriesData.slice(0, limit);
+    // }
     showSeries(seriesData, movie_cards_series);
 }
 
-// Get movies
-// getMovies(apiURL);
 
-// async function getMovies(url) {
-//     const response = await fetch(url);
-//     const jsonData = await response.json();
-//     console.log(jsonData.results);
-//     showMovies(jsonData.results);
-//     const screamMovie = jsonData.results.find(movie => movie.title === "Scream VI");
-//     if (screamMovie) {
-//         const body = document.getElementById('body');
-//         body.style.backgroundImage = `url(${imgURL + screamMovie.backdrop_path})`;
-//         body.innerHTML = `
-//       <div class="movie-info">
-//         <h2 class="movie-title">${screamMovie.title}</h2>
-//         <p class="release-date"> ${screamMovie.release_date}</p>
-//         <div>
-//         <button class="play-button">Play</button>
-//         <button class="plus">+</button>
-//         </div>
-//         <p class="movie-overview">${screamMovie.overview}</p>
-
-//       </div>
-//     ` + body.innerHTML;
-//     }
-
-// }
-
-// const showMovies = (movies) => {
-//     main.innerHTML = '';
-//     movies.forEach((movie) => {
-//         const { title, vote_average, poster_path, overview, backdrop_path } = movie;
-//         const movieDiv = document.createElement('div')
-//         movieDiv.classList.add('movie');
-//         movieDiv.style.backgroundImage = `url(${imgURL+backdrop_path})`
-//         movieDiv.innerHTML = `
-//         <img src="${imgURL+poster_path}" alt="${title}"/>;
-//         <div class='movie-info'>
-//         <h3>${title}</h3>
-//         <span class=''>${vote_average}</span>
-//         <div class='overview'>
-//         <h3>Overview</h3>
-//         ${overview}
-//         </div>
-//         </div>
-
-//         `
-//         main.appendChild(movieDiv);
-
-//     })
-// };
 
 
 const showSeries = (series, container) => {
