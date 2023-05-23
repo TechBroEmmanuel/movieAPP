@@ -218,13 +218,22 @@ html::-webkit-scrollbar-thumb {
   padding: 0.3rem 0.5rem;
   cursor: pointer;
 }
+.trending_section .trending_top div .next_icons .prev_Icon,
+.trending_section .trending_top div .next_icons .next_Icon {
+ 
+  font-weight: 200;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
 
 .trending_section .movie_cards {
   display: flex;
   justify-content: start;
 overflow-x: auto;
 gap: 1rem;
-scroll-behaviour:smooth;
+scroll-behavior:smooth;
 }
 .trending_section .movie_cards::-webkit-scrollbar{
   /* hide scrollbar */
@@ -274,8 +283,12 @@ scroll-behaviour:smooth;
 
 .movie_cards_series {
   display: flex;
+  flex-direction:row;
 gap: 1.3rem;
-flex-flow:row wrap;
+overflow-x: auto;
+scroll-behavior:smooth;
+justify-content: start;
+  overflow: hidden;
 }
 
 .movie_card_series {
@@ -284,18 +297,19 @@ flex-flow:row wrap;
   align-items: center;
   justify-content: start;
   gap: 1rem;
-  width: 27rem;
+  width: 18.5rem;
+  height:16rem;
   border-radius: 20px;
   background-color: rosybrown;
   padding: 1rem;
-  overflow: hidden;
 }
 
 
 .movie_card_series img {
-  width: 13rem;
-  height: auto;
+  width: 7rem;
   border-radius:10px;
+  top: 2rem;
+  bottom: 2rem;
 }
 
 .movie_card_series .card_details {
@@ -331,3 +345,33 @@ flex-flow:row wrap;
 .movie_card_series .card_details .hero_play_div {
   background-color: transparent;
 }
+
+/* modal stylings */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    margin: 10% auto;
+    padding: 2rem;
+    border: 1px solid #888;
+    max-width: 600px;
+    color:#FFF;
+    font-size: 17px;
+  }
+  
+  .close {
+    float: right;
+    cursor: pointer;
+    color: red;
+    font-size:40px;
+  }
+  
