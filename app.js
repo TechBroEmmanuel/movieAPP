@@ -71,11 +71,8 @@ nextSeriesButton.addEventListener('click', () => {
  console.log('clicked next')
 });
 nextButton.addEventListener('click', () => {
-    const totalMovies = initialMovies.length;
-    movieIndex = (movieIndex + 1) % totalMovies;
-    const endIndex = (movieIndex + 5) % totalMovies;
-    const visibleMovies = initialMovies.slice(movieIndex, endIndex);
-    showMovies(visibleMovies, movie_cards);
+    movieIndex = Math.min(movieIndex + 1, initialMovies.length - 1) 
+    showMovies(initialMovies, movie_cards);
 });
 
 //swipe wheel
@@ -106,24 +103,15 @@ async function trendingMovies(url) {
     const jsonData = await response.json();
     initialMovies = jsonData.results;
     console.log(initialMovies)
-    
     // if (limit) {
     //     movies = movies.slice(0, limit); //keep only the first 5 movies
     //     initialMovies = [...movies];
     // } 
 
 
-    showMovies(initialMovies, movie_cards);
+    showMovies(initialMovies, movie_cards, movieIndex);
 
-// const fastX = jsonData.results.find(movie => movie.title === "Fast X");
-// if (fastX) {
-//     const background = document.getElementById('now_showing');
-//     background.style.backgroundImage = `url(${imgURL + fastX.backdrop_path})`;
-//     background.innerHTML = `
-     
-//     ` + background.innerHTML;
-// }
-
+   
 }
 
 const showMovies = (movies, container) => {
@@ -132,7 +120,7 @@ const showMovies = (movies, container) => {
         const { title, poster_path, vote_average, runtime, genre_ids } = movie;
         const card = document.createElement('div')
         card.classList.add('movie_card');
-        card.style.transform = `translateX(${(i - movieIndex) * 1}rem)`;
+         card.style.transform = `translateX(${(i - movieIndex) * 2}rem)`;
         card.innerHTML = `
         <img src="${imgURL + poster_path}" alt="${title}"/>  
          `
@@ -148,13 +136,16 @@ const showMovies = (movies, container) => {
             const modal = document.getElementById('modal');
             modal.style.display = 'block';
         })
+            //show the modal
+            const modal = document.getElementById('modal');
+            modal.style.display = 'block';
+        })
 
         container.appendChild(card);
 
-    })
+    }
     // const containerWidth = movies.length * 17;
     // container.style.width = `${containerWidth}rem`;
-};
 //close the modal when open
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('close')) {
@@ -173,10 +164,12 @@ series(seriesUrl)
 async function series(url) {
     const response = await fetch(url);
     const jsonData = await response.json();
-    initialSeries = jsonData.results;
-    console.log(initialSeries)
-  
-    showSeries(initialSeries, movie_cards_series);
+    let seriesData = jsonData.results;
+    console.log(seriesData)
+    if (limit) {
+        seriesData = seriesData.slice(0, limit);
+    }
+    showSeries(seriesData, movie_cards_series);
 }
 
 
